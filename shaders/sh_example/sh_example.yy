@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"sh_example",
+  "name":"sh_example",
+  "parent":{
+    "name":"InstancedVertexBuffers",
+    "path":"InstancedVertexBuffers.yyp",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}
