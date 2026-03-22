@@ -1,6 +1,6 @@
 ///_ivb_init()
 #define _ivb_init
-global.__ivb_supported = os_type==os_operagx;
+global.__ivb_supported = os_type==os_operagx || os_browser!=browser_not_a_browser;
 if(!global.__ivb_supported) {
 	return;
 }
@@ -144,7 +144,7 @@ if(global.__ivb_supported) {
 	var src_offset = max(0, argument[3]);
 	var vert_num = argument[4];
 	
-	var buffer_addr = int64(buffer_get_address(buffer)) + src_offset;
+	var buffer_addr = ( os_browser!=browser_not_a_browser ? 0 : int64(buffer_get_address(buffer)) ) + src_offset;
 	var buffer_size = buffer_get_size(buffer) - src_offset;
 	
 	if(vert_num==-1) {
@@ -157,7 +157,9 @@ if(global.__ivb_supported) {
 		show_error("The buffer size is less than required for the specified number of vertices.", true);
 	}
 	
-	return __ivb_vertex_buffer_create(buffer_addr, format_info, vert_num);
+	var array_buffer = os_browser!=browser_not_a_browser ? buffer_get_address(buffer) : undefined;
+	var format_info_fix = os_browser!=browser_not_a_browser ? json_stringify(format_info) : format_info;
+	return __ivb_vertex_buffer_create(array_buffer, buffer_addr, format_info_fix, vert_num);
 }
 return undefined;
 
@@ -195,10 +197,14 @@ if(global.__ivb_supported) {
 	var src_offset = argument[3];
 	var inst_num = argument[4];
 	
-	var buffer_addr = buffer!=-1 ? int64( buffer_get_address(buffer) ) + src_offset : -1;
-	var buffer_size = buffer_get_size(buffer) - src_offset;
+	var buffer_addr = -1;
+	if(buffer!=-1) {
+		buffer_addr = ( os_browser!=browser_not_a_browser ? 0 : int64(buffer_get_address(buffer)) ) + src_offset;
+	}
 	
 	if(buffer_addr!=-1) {
+		var buffer_size = buffer_get_size(buffer) - src_offset;
+		
 		if(inst_num==-1) {
 			inst_num = floor(buffer_size / inst_size);
 		} else if(inst_num <= 0) {
@@ -212,7 +218,8 @@ if(global.__ivb_supported) {
 		show_error("Buffer not specified, inst_num value is invalid.", true);
 	}
 	
-	return __ivb_instance_buffer_create(buffer_addr, inst_size, inst_num);
+	var array_buffer = os_browser!=browser_not_a_browser && buffer!=-1 ? buffer_get_address(buffer) : undefined;
+	return __ivb_instance_buffer_create(array_buffer, buffer_addr, inst_size, inst_num);
 }
 return undefined;
 
@@ -234,9 +241,9 @@ if(global.__ivb_supported) {
 		show_error("The specified range is outside the buffer.", true);
 	}
 	
-	var buffer_addr = buffer!=-1 ? int64( buffer_get_address(buffer) ) + src_offset : -1;
-	
-	__ivb_instance_buffer_update(argument[0], argument[1], buffer_addr, buffer_size);
+	var buffer_addr = ( os_browser!=browser_not_a_browser ? 0 : int64(buffer_get_address(buffer)) ) + src_offset;
+	var array_buffer = os_browser!=browser_not_a_browser ? buffer_get_address(buffer) : undefined;
+	__ivb_instance_buffer_update(argument[0], argument[1], array_buffer, buffer_addr, buffer_size);
 }
 
 ///ivb_instance_buffer_delete(instance_buffer)
