@@ -139,8 +139,10 @@ function __ivb_vertex_buffer_submit(vbufferIndex, primtype, ibufferIndex, instNu
 		const elem = vert_elems[i];
 		//const attr = vertAttrLoc[i]; // cached
 		const attr = _webgl.getAttribLocation(program, elem.name);
-		_webgl.enableVertexAttribArray(attr);
-		_webgl.vertexAttribPointer(attr, elem.elem_num, elem.type, elem.norm, vert_size, elem.offset);
+		if(attr!==-1) {
+			_webgl.enableVertexAttribArray(attr);
+			_webgl.vertexAttribPointer(attr, elem.elem_num, elem.type, elem.norm, vert_size, elem.offset);
+		}
 	}
 	
 	// bind instance buffer
