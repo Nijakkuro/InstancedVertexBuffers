@@ -1,13 +1,13 @@
-var _webgl = undefined;
-var _webglInstExt = undefined;
+_webgl = undefined;
+_webglInstExt = undefined;
 
-var _vertexBuffers = new Array(256);
-var _vertexBufferVertNum = new Array(256).fill(0);
-var _vertexBufferFormats = new Array(256);
+_vertexBuffers = new Array(256);
+_vertexBufferVertNum = new Array(256).fill(0);
+_vertexBufferFormats = new Array(256);
 
-var _instanceBuffers = new Array(256);
-var _instanceBufferInstNum = new Array(256).fill(0);
-var _instanceBufferInstDataSizes = new Array(256).fill(0);
+_instanceBuffers = new Array(256);
+_instanceBufferInstNum = new Array(256).fill(0);
+_instanceBufferInstDataSizes = new Array(256).fill(0);
 
 function __ivb_init() {
 	_webgl = canvas.getContext('webgl');
@@ -45,7 +45,7 @@ function __ivb_vertex_buffer_create(srcArrayBuffer, srcBufferAddr, vertexFormatI
 		vertexFormatInfo = JSON.parse(vertexFormatInfo);
 	}
 	
-	const buffer = srcArrayBuffer!==undefined ? new Uint8Array(srcArrayBuffer) : Module.HEAPU8;
+	const buffer = srcArrayBuffer!==null ? new Uint8Array(srcArrayBuffer) : Module.HEAPU8;
 	const data = buffer.subarray(srcBufferAddr, srcBufferAddr + vertNum * vertexFormatInfo.vert_size);
 	
 	const vertexBuffer = _webgl.createBuffer();
@@ -188,7 +188,7 @@ function __ivb_instance_buffer_create(srcArrayBuffer, srcBufferAddr, instanceDat
 	const instanceBuffer = _webgl.createBuffer();
 	_webgl.bindBuffer(_webgl.ARRAY_BUFFER, instanceBuffer);
 	if(srcBufferAddr!=-1) {
-		const buffer = srcArrayBuffer!==undefined ? new Uint8Array(srcArrayBuffer) : Module.HEAPU8;
+		const buffer = srcArrayBuffer!==null ? new Uint8Array(srcArrayBuffer) : Module.HEAPU8;
 		const data = buffer.subarray(srcBufferAddr, srcBufferAddr + instanceDataSize * instanceNum);
 		_webgl.bufferData(_webgl.ARRAY_BUFFER, data, _webgl.DYNAMIC_DRAW);
 	} else {
@@ -215,7 +215,7 @@ function __ivb_instance_buffer_update(bufferIndex, destOffset, srcArrayBuffer, s
 		return;
 	}
 	
-	const buffer = srcArrayBuffer!==undefined ? new Uint8Array(srcArrayBuffer) : Module.HEAPU8;
+	const buffer = srcArrayBuffer!==null ? new Uint8Array(srcArrayBuffer) : Module.HEAPU8;
 	const data = buffer.subarray(srcBufferAddr, srcBufferAddr + srcBufferSize);
 	
 	_webgl.bindBuffer(_webgl.ARRAY_BUFFER, instanceBuffer);

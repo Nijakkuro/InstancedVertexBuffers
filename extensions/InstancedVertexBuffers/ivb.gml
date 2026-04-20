@@ -1,6 +1,6 @@
 ///_ivb_init()
 #define _ivb_init
-global.__ivb_supported = os_type==os_operagx || os_browser!=browser_not_a_browser;
+global.__ivb_supported = os_type==os_operagx; //|| os_browser!=browser_not_a_browser; // doesn't work on HTML5 :(
 if(!global.__ivb_supported) {
 	return;
 }
